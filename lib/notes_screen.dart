@@ -12,6 +12,7 @@ class NotesScreen extends ConsumerWidget {
     final notes = ref.watch(noteProvider);
     return Scaffold(
       floatingActionButton: FloatingActionButton(
+        child: Icon(Icons.add),
         onPressed: () {
           showDialog(
             context: context,
@@ -44,6 +45,14 @@ class NotesScreen extends ConsumerWidget {
               context.go('/details', extra: note);
             },
             title: Text(note.title),
+            leading: IconButton(
+              onPressed: () {
+                 ref.read(noteProvider.notifier).favoriteNote(note);
+              }, 
+              icon: Icon(
+                note.isFavorite ? Icons.star
+                : Icons.star_border
+              )),
             trailing: IconButton(
               onPressed: () {
                 ref.read(noteProvider.notifier).removeNote(note.id);
