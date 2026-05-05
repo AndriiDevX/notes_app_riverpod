@@ -3,13 +3,32 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'note_provider.dart';
 
-
-class NotesScreen extends ConsumerWidget {
+class NotesScreen extends ConsumerStatefulWidget {
   const NotesScreen({super.key});
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  ConsumerState<NotesScreen> createState() => _NotesScreenState();
+}
+
+class _NotesScreenState extends ConsumerState<NotesScreen> {
+  String query = '';
+  bool showOnlyFavorites = false;
+  bool showOnlyNotFavorites = false;
+
+  @override
+  Widget build(BuildContext context) {
     final notes = ref.watch(noteProvider);
+
+    final filteredNotes = notes
+        .where((note) => note.title.toLowerCase().contains(query.toLowerCase()))
+        .where(
+          (note) =>
+              (!showOnlyFavorites && !showOnlyNotFavorites)||
+              (showOnlyFavorites && note.isFavorite)||
+              (showOnlyNotFavorites && !note.isFavorite)
+        )
+        .toList();
+
     return Scaffold(
       floatingActionButton: FloatingActionButton(
         child: Icon(Icons.add),
@@ -35,32 +54,58 @@ class NotesScreen extends ConsumerWidget {
           );
         },
       ),
-      appBar: AppBar(title: Text('My notes'), centerTitle: true),
-      body: ListView.builder(
-        itemCount: notes.length,
-        itemBuilder: (context, index) {
-          final note = notes[index];
-          return ListTile(
-            onTap: () {
-              context.go('/details', extra: note);
+      appBar: AppBar(
+        title: Text('My notes'),
+        centerTitle: true,
+        actions: [
+          IconButton(
+            onPressed: () {
+              setState(() {
+                showOnlyFavorites = !showOnlyFavorites;
+              });
             },
-            title: Text(note.title),
-            leading: IconButton(
-              onPressed: () {
-                 ref.read(noteProvider.notifier).favoriteNote(note);
-              }, 
-              icon: Icon(
-                note.isFavorite ? Icons.star
-                : Icons.star_border
-              )),
-            trailing: IconButton(
-              onPressed: () {
-                ref.read(noteProvider.notifier).removeNote(note.id);
+            icon: Icon(Icons.star),
+          ),
+        ],
+      ),
+      body: Column(
+        children: [
+          TextField(
+            onChanged: (value) {
+              setState(() {
+                query = value;
+              });
+            },
+          ),
+          Expanded(
+            child: ListView.builder(
+              itemCount: filteredNotes.length,
+              itemBuilder: (context, index) {
+                final note = filteredNotes[index];
+                return ListTile(
+                  onTap: () {
+                    context.go('/details', extra: note);
+                  },
+                  title: Text(note.title),
+                  leading: IconButton(
+                    onPressed: () {
+                      ref.read(noteProvider.notifier).favoriteNote(note);
+                    },
+                    icon: Icon(
+                      note.isFavorite ? Icons.star : Icons.star_border,
+                    ),
+                  ),
+                  trailing: IconButton(
+                    onPressed: () {
+                      ref.read(noteProvider.notifier).removeNote(note.id);
+                    },
+                    icon: Icon(Icons.delete),
+                  ),
+                );
               },
-              icon: Icon(Icons.delete),
             ),
-          );
-        },
+          ),
+        ],
       ),
     );
   }
