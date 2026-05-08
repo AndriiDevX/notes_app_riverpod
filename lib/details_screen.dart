@@ -14,7 +14,6 @@ class DetailsScreen extends ConsumerWidget {
     final controller = TextEditingController(text: note.title);
 
     return Scaffold(
-      
       appBar: AppBar(
         title: Text('Edit Note'),
         centerTitle: true,

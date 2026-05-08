@@ -5,15 +5,11 @@ class NoteModel {
 
   NoteModel({required this.id, required this.title, required this.isFavorite});
 
-  NoteModel copyWith({
-    int? id,
-    String? title,
-    bool? isFavourite
-  }) {
+  NoteModel copyWith({int? id, String? title, bool? isFavourite}) {
     return NoteModel(
-      id: id??this.id,
-      title: title??this.title,
-      isFavorite: isFavourite?? this.isFavorite,
+      id: id ?? this.id,
+      title: title ?? this.title,
+      isFavorite: isFavourite ?? this.isFavorite,
     );
   }
 }
