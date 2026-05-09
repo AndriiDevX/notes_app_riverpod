@@ -32,6 +32,7 @@ class _NotesScreenState extends ConsumerState<NotesScreen> {
         .toList();
 
     return Scaffold(
+      backgroundColor: Color(0xFFF5F7FA),
       floatingActionButton: FloatingActionButton(
         child: Icon(Icons.add),
         onPressed: () {
@@ -39,9 +40,8 @@ class _NotesScreenState extends ConsumerState<NotesScreen> {
             context: context,
             builder: (context) {
               final controller = TextEditingController();
-              
+
               return AlertDialog(
-                
                 title: Text('Add note'),
                 content: TextField(controller: controller),
                 actions: [
@@ -59,6 +59,7 @@ class _NotesScreenState extends ConsumerState<NotesScreen> {
         },
       ),
       appBar: AppBar(
+        backgroundColor: Color(0xFFF5F7FA),
         title: Text('My notes'),
         centerTitle: true,
         actions: [
@@ -84,29 +85,47 @@ class _NotesScreenState extends ConsumerState<NotesScreen> {
               children: [
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  ElevatedButton(
-                    onPressed: () {
-                      setState(() {
-                        selectedFilter = Filter.all;
-                      });
-                    }, 
-                    child: Icon(Icons.notes)),
-                    ElevatedButton(
-                      onPressed: () {
-                        setState(() {
-                          selectedFilter = Filter.onlyFavorites;
-                        });
-                      } , 
-                      child: Icon(Icons.star)),
-                      ElevatedButton(onPressed: () {
-                        setState(() {
-                          selectedFilter = Filter.onlyNotFavorites;
-                        });
-                      }, child: Icon(Icons.star_border) )
-                ],
-
-              ),
+                  children: [
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        ChoiceChip(
+                          showCheckmark: false,
+                          label: const Icon(Icons.notes),
+                          selected: selectedFilter == Filter.all,
+                          onSelected: (selected) {
+                            if (selected)
+                              setState(() => selectedFilter = Filter.all);
+                          },
+                        ),
+                        const SizedBox(width: 8),
+                        ChoiceChip(
+                          showCheckmark: false,
+                          label: const Icon(Icons.star),
+                          selected: selectedFilter == Filter.onlyFavorites,
+                          onSelected: (selected) {
+                            if (selected)
+                              setState(
+                                () => selectedFilter = Filter.onlyFavorites,
+                              );
+                          },
+                        ),
+                        const SizedBox(width: 8),
+                        ChoiceChip(
+                          showCheckmark: false,
+                          label: const Icon(Icons.star_border),
+                          selected: selectedFilter == Filter.onlyNotFavorites,
+                          onSelected: (selected) {
+                            if (selected)
+                              setState(
+                                () => selectedFilter = Filter.onlyNotFavorites,
+                              );
+                          },
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
                 TextField(
                   onChanged: (value) {
                     setState(() {
