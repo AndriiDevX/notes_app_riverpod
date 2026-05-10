@@ -9,7 +9,7 @@ class NoteModel {
     return NoteModel(
       id: id ?? this.id,
       title: title ?? this.title,
-      isFavorite: isFavourite ?? this.isFavorite,
+      isFavorite: isFavourite ?? isFavorite,
     );
   }
 }
