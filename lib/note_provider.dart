@@ -15,18 +15,13 @@ class NoteNotifier extends StateNotifier<List<NoteModel>> {
       isFavorite: false,
     );
     state = [...state, newNote];
-    final notesJson = state.map((note) {
-      return {
-        'id': note.id,
-        'title': note.title,
-        'isFavorite': note.isFavorite,
-      };
-    }).toList();
-    notesBox.put('notes', notesJson);
+
+    saveNotes();
   }
 
   void removeNote(int id) {
     state = state.where((n) => n.id != n.id).toList();
+    saveNotes();
   }
 
   void favoriteNote(NoteModel note) {
@@ -36,6 +31,7 @@ class NoteNotifier extends StateNotifier<List<NoteModel>> {
       }
       return n;
     }).toList();
+    saveNotes();
   }
 
   void updateNote(NoteModel note, String newTitle) {
@@ -45,6 +41,7 @@ class NoteNotifier extends StateNotifier<List<NoteModel>> {
       }
       return n;
     }).toList();
+    saveNotes();
   }
 
   void loadNotes() {
@@ -58,6 +55,17 @@ class NoteNotifier extends StateNotifier<List<NoteModel>> {
         isFavorite: note['isFavorite'],
       );
     }).toList();
+  }
+
+  void saveNotes() {
+    final notesJson = state.map((note) {
+      return {
+        'id': note.id,
+        'title': note.title,
+        'isFavorite': note.isFavorite,
+      };
+    }).toList();
+    notesBox.put('notes', notesJson);
   }
 }
 
