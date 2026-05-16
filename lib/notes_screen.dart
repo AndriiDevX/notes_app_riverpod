@@ -62,22 +62,8 @@ class _NotesScreenState extends ConsumerState<NotesScreen> {
         backgroundColor: Color(0xFFF5F7FA),
         title: Text('My notes'),
         centerTitle: true,
-        actions: [
-          IconButton(
-            onPressed: () {
-              setState(() {
-                if (selectedFilter == Filter.all) {
-                  selectedFilter = Filter.onlyFavorites;
-                } else if (selectedFilter == Filter.onlyFavorites) {
-                  selectedFilter = Filter.onlyNotFavorites;
-                } else {
-                  selectedFilter = Filter.all;
-                }
-              });
-            },
-            icon: Icon(Icons.star),
-          ),
-        ],
+        
+        
       ),
       body: filteredNotes.isEmpty
           ? Center(child: Text('No notes found'))
@@ -154,7 +140,11 @@ class _NotesScreenState extends ConsumerState<NotesScreen> {
                         trailing: IconButton(
                           onPressed: () {
                             ref.read(noteProvider.notifier).removeNote(note.id);
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              SnackBar(content: Text('Note deleted')),
+                            );
                           },
+
                           icon: Icon(Icons.delete),
                         ),
                       );

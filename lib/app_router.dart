@@ -1,7 +1,7 @@
 import 'package:go_router/go_router.dart';
-import 'package:notes_app_riverpod/note_model.dart';
-import 'package:notes_app_riverpod/notes_screen.dart';
-import 'package:notes_app_riverpod/details_screen.dart';
+import 'package:notes_app/note_model.dart';
+import 'package:notes_app/notes_screen.dart';
+import 'package:notes_app/details_screen.dart';
 
 final router = GoRouter(
   routes: [

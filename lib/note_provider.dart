@@ -20,7 +20,7 @@ class NoteNotifier extends StateNotifier<List<NoteModel>> {
   }
 
   void removeNote(int id) {
-    state = state.where((n) => n.id != n.id).toList();
+    state = state.where((n) => n.id != id).toList();
     saveNotes();
   }
 
