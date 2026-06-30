@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
-import 'package:notes_app/note_model.dart';
-import 'package:notes_app/note_provider.dart';
-
+import '../core/app_colors.dart';
+import '../models/note_model.dart';
+import '../providers/note_provider.dart';
 
 class DetailsScreen extends ConsumerWidget {
   final NoteModel note;
@@ -15,7 +15,8 @@ class DetailsScreen extends ConsumerWidget {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text('Edit Note'),
+        backgroundColor: AppColors.scaffoldBackground,
+        title: const Text('Edit Note'),
         centerTitle: true,
         actions: [
           IconButton(
@@ -27,12 +28,12 @@ class DetailsScreen extends ConsumerWidget {
                 context.go('/');
               }
             },
-            icon: Icon(Icons.save),
+            icon: const Icon(Icons.save),
           ),
         ],
       ),
       body: Padding(
-        padding: EdgeInsets.all(16),
+        padding: const EdgeInsets.all(16),
         child: TextField(controller: controller),
       ),
     );
