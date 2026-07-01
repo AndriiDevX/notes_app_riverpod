@@ -1,4 +1,3 @@
 # Auto detect text files and perform LF normalization
 * text=auto
-windows/* linguist-vendored
-linux/* linguist-vendored
+*.dart linguist-language=Dart
